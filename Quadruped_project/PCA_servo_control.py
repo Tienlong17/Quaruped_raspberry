@@ -36,7 +36,7 @@ servo15 = servo.Servo(pca.channels[15], min_pulse=440, max_pulse=2400)
 # We sleep in the loops to give the servo time to move into position.
 time_stop = 0.007
 def Rot_Arm_RF(angle0, angle1, angle2):
-    servo0.angle = 90 + angle0 #chua fix
+    servo0.angle = 90 - angle0 #chua fix
     time.sleep(time_stop)
     servo1.angle = 90 - angle1
     time.sleep(time_stop)
@@ -52,7 +52,7 @@ def Rot_Arm_LF(angle0, angle1, angle2):
     time.sleep(time_stop)
 
 def Rot_Arm_RH(angle0, angle1, angle2):
-    servo8.angle = 90 + angle0 #chua fix
+    servo8.angle = 90 - angle0 #chua fix
     time.sleep(time_stop)
     servo9.angle = 90 - angle1
     time.sleep(time_stop)
@@ -79,4 +79,5 @@ def Rot_Arm_Rot_Forward_Second(angle0, angle1, angle2):
     time.sleep(0.01)
 
 pca.deinit()
+
 
