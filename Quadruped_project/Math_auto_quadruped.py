@@ -51,13 +51,13 @@ def Type_Trot(direction, TM, s, h, sampling_time, L1, L2, L3, H):
     
 def G0_Forward(TM, s, h, sampling_time, t, L1, L2, L3, H):
     Arm_Forward_Trot_Frist(TM, s, h, sampling_time, t, L1, L2, L3, H)
-    time.sleep(0.07)
+    time.sleep(0.02)
     Arm_Forward_Trot_Second(TM, s, h, sampling_time, t, L1, L2, L3, H)
-    time.sleep(0.07)
+    time.sleep(0.02)
     Arm_Forward_Trot_Third(TM, s, h, sampling_time, t, L1, L2, L3, H)
-    time.sleep(0.07)
+    time.sleep(0.02)
     Arm_Forward_Trot_Fourth(TM, s, h, sampling_time, t, L1, L2, L3, H)
-    time.sleep(0.07)
+    time.sleep(0.02)
 def Arm_Forward_Trot_Frist(TM, s, h, sampling_time, t, L1, L2, L3, H):
     x1 = -L1
     z1 = round(Congthuc_toado_ditoi_chantruoc(TM, s, h, t, sampling_time, L1, L2, L3, H)[0],2)
@@ -170,15 +170,13 @@ def Congthuc_toado_dilui_chansau(TM, s, h, t, sampling_time, L1, L2, L3, H):
 
 def Type_Crawl(direction, TM, s, h, sampling_time, L1, L2, L3, H):
     array =  np.arange(0, 2*TM + sampling_time, sampling_time)
-    if direction == 0:
-        print(" crawl dang dung")
-    elif direction == 1:
+    if direction == 1 or direction == 5:
         G0_Forward_Crawl(TM, s, h, sampling_time, L1, L2, L3, H)
-    elif direction == 2:
-        Go_Backward_Crawl(TM, s, h, sampling_time, L1, L2, L3, H)
     elif direction == 3:
+        Go_Backward_Crawl(TM, s, h, sampling_time, L1, L2, L3, H)
+    elif direction == 2 or direction == 5:
         Go_Rightward_Crawl(TM, s, h, sampling_time, L1, L2, L3, H)
-    elif direction == 4:
+    elif direction == 4 or direction == 0:
         Go_Lefttward_Crawl(TM, s, h, sampling_time, L1, L2, L3, H)
     else:
         print("dung 0")
