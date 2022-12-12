@@ -9,8 +9,8 @@ import time
 GPIO.setmode(GPIO.BCM)
 
 #set GPIO Pins
-trigger = [6,13,19,26]
-echo = [12,16,20,21]
+trigger = [12,16,20,21]
+echo =  [6,13,19,26]
 
  
 #set GPIO direction (IN / OUT)
@@ -98,8 +98,8 @@ L3 = 10
 HIGH_stand = 12#day la chieu cao dat lam gia tri khi dung 
 
 # information about action of Robot
-s_step_trot = 3 # khoang cach sai buoc chan
-high_step_trot = 3 # do cao nhac chan len de buoc tiep
+s_step_trot = 2 # khoang cach sai buoc chan
+high_step_trot = 2 # do cao nhac chan len de buoc tiep
 
 
 s_step__crawl = 4 # khoang cach sai buoc chan
@@ -120,11 +120,18 @@ def Default_0_degree():
     PCA_servo_control.Default_legs_1()
 def Default_Stand_Up():
     PCA_servo_control.Default_Stand_Up()
-def Stand_Robot():
-    Default_0_degree()
-    time.sleep(0.4)
-    PCA_servo_control.Standup()
+def Stand_Robot(isStand):
+    if isStand == 2:
+        PCA_servo_control.Standup()
+    elif isStand == 0:
+        Default_0_degree()
+        time.sleep(0.4)
+        PCA_servo_control.Standup()
+        
 def Spin_Right():
-    Math_auto_quadruped.Spin_Right(3, 3, L1, L2, L3, HIGH_stand)
-def Down_Robot():
+    Math_auto_quadruped.Spin_Right(2, 3, L1, L2, L3, HIGH_stand)
+def Spin_Left():
+    Math_auto_quadruped.Spin_Left(2, 3, L1, L2, L3, HIGH_stand)
+def Down_Robot(isStand):
+    #if isStand ==1:
     PCA_servo_control.Dowwnup()

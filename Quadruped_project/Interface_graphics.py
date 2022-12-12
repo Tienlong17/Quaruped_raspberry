@@ -31,13 +31,13 @@ color_button1 = (232, 53, 21)
 color_button2 = (232, 232, 21)
 blue_light = (21, 232, 204)
 blue_drark = (2, 38, 102)
-
 direction = -1
-typeMove = 2
-def Create_Text_Word(a : str):
+typeMove = 1
+isStand = 0
+def Create_Text_Word(a : str, color):
     '''Ham de tao ghi chu~'''
     font = pygame.font.SysFont("sans",30)
-    return  font.render(a,True, blue_light)
+    return  font.render(a,True, color)
 
 clock = pygame.time.Clock()
 try:
@@ -55,13 +55,22 @@ try:
         pygame.draw.rect(screen,color_button2,(190,430,50,50))
 
         #draw information
-        screen.blit(Create_Text_Word('Name Robot:'),(12,12))
-        screen.blit(Create_Text_Word('Quadruped'),(200,12))
-        screen.blit(Create_Text_Word('Walking Style:'),(11,42))
+        screen.blit(Create_Text_Word('Name Robot:',blue_light),(12,12))
+        screen.blit(Create_Text_Word('Quadruped',blue_light),(200,12))
+        screen.blit(Create_Text_Word('Walking Style:',blue_light),(11,42))
         
-        # draw funtion type of movement 
-        screen.blit(Create_Text_Word('1.Trotting'),(205,45))
-        screen.blit(Create_Text_Word('2.Crawling'),(360,45))
+        # draw funtion type of movement
+        if typeMove == 1:
+            pygame.draw.rect(screen,color_button2,(205,45,150,27))
+            screen.blit(Create_Text_Word('1.Trotting',blue_drark),(205,45))
+            screen.blit(Create_Text_Word('2.Crawling',blue_light),(360,45))
+        elif typeMove == 2:
+            screen.blit(Create_Text_Word('1.Trotting',blue_light),(205,45))
+            pygame.draw.rect(screen,color_button2,(360,45,150,27))
+            screen.blit(Create_Text_Word('2.Crawling',blue_drark),(360,45))
+        elif 0< typeMove < 3:
+            screen.blit(Create_Text_Word('1.Trotting',blue_light),(205,45))
+            screen.blit(Create_Text_Word('2.Crawling',blue_light),(360,45))
         direction = -1 
         for event in pygame.event.get():
             # Event by Type of walking Keyboard kieu di 
@@ -79,16 +88,21 @@ try:
                     direction = 1
                 if event.key == pygame.K_DOWN: 
                     direction = 3
+                if event.key == pygame.K_a:         # xoay trai 
+                    main_module.Spin_Left()
                 if event.key == pygame.K_d:         # xoay phai
                     main_module.Spin_Right()
                 if event.key == pygame.K_i:         # dua ve vi tri nam
-                    main_module.Default_0_degree() 
+                    main_module.Default_0_degree()
+                    isStand = 0
                 if event.key == pygame.K_u:         # dua ve vi tri di dung
-                    main_module.Default_Stand_Up()              
+                    main_module.Default_Stand_Up()
                 if event.key == pygame.K_o:         # dung len
-                    main_module.Stand_Robot()  
+                    main_module.Stand_Robot(isStand)
+                    isStand = 1
                 if event.key == pygame.K_p:         # nam xuong 
-                    main_module.Down_Robot()
+                    main_module.Down_Robot(isStand)
+                    isStand = 2
         if 0< typeMove <3: # khong truyen so khong thi co di chuyen khong 
             #print('typeMove =',typeMove) Ve giao dien dang di theo kieu nao
             if 0 <= direction < 7:

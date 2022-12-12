@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
 # SPDX-License-Identifier: MIT
-
+import numpy as np
 import time
 import math 
 from board import SCL, SDA
@@ -34,7 +34,7 @@ servo13 = servo.Servo(pca.channels[13], min_pulse=440, max_pulse=2400)
 servo14 = servo.Servo(pca.channels[14], min_pulse=440, max_pulse=2400)
 servo15 = servo.Servo(pca.channels[15], min_pulse=440, max_pulse=2400)
 # We sleep in the loops to give the servo time to move into position.
-time_stop = 0.02
+time_stop = 0.05      # 0.02
 spam_time = 0.01
 def Rot_Angle(a, b):
     a.angle = b
@@ -184,11 +184,10 @@ def Default_Stand_Up():
     
 def Controll_Downup():
     anpha = 45
-    for i in range(0,anpha,1):
+    for i in np.arange(0,anpha,1):
         # khau 2
         servo1.angle = (180-anpha) + i # tuc la chay toi 180 -anpha do
         servo5.angle = anpha - i
-        time.sleep(spam_time)
         servo9.angle = (180-anpha) + i
         servo13.angle = anpha - i
         time.sleep(spam_time)
@@ -204,18 +203,15 @@ def Standup():
     spam_time = 0.05
     anpha = 45
     time_anpha = 1.5
-    for i in range(0,anpha,3):
+    for i in np.arange(0,anpha,1.5): # <2
         # khau 2
         servo1.angle = 180 - i # tuc la chay toi 120 do
         servo5.angle = i
-        time.sleep(spam_time)
         servo9.angle = 180 - i
         servo13.angle = i
-        time.sleep(spam_time)
         # khau 3
         servo2.angle = time_anpha*i
         servo6.angle = 180 - time_anpha*i
-        time.sleep(spam_time)
         servo10.angle = time_anpha*i
         servo14.angle = 180 - time_anpha*i
         time.sleep(spam_time)
