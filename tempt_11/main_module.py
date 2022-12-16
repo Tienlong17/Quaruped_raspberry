@@ -133,5 +133,5 @@ def Spin_Right():
 def Spin_Left():
     Math_auto_quadruped.Spin_Left(2, 3, L1, L2, L3, HIGH_stand)
 def Down_Robot(isStand):
-    #if isStand ==1:
-    PCA_servo_control.Dowwnup()
+    if isStand ==1:
+        PCA_servo_control.Dowwnup()

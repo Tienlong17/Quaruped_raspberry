@@ -6,6 +6,7 @@ import PCA_servo_control
 number_round = 0
 delta_y = 1
 delta_z = -2
+p_strong = 1
 spam_time = 0.08
 def IK(x: float, y: float , z: float, L1: float, L2: float, L3: float, H: float):
     theta = []
@@ -48,44 +49,47 @@ def Type_Trot(direction, s, h, L1, L2, L3, H):
 def G0_Forward_Trot(s, h, L1, L2, L3, H):
     #chuyen toa do
     #dua cac chan ve vi tri ban dau
-    #chuyen toa do
-    theta = IK(-L1,-H+h + delta_y,(s/2)- delta_z,L1, L2, L3, H) #Cap chan di dau tien di len
+    #chan 1 vs chan 4 di cung luc
+    theta = IK(-L1,-H+h + delta_y,(s/2)- delta_z,L1, L2, L3, H)
+    PCA_servo_control.RF_Angle_2(150)
     PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])
+    time.sleep(0.02)
+    PCA_servo_control.LH_Angle_2(150)
     PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])
     
     theta = IK(-L1,-H + delta_y, -s - delta_z, L1, L2, L3, H) # Cap chan di sau day phia sau
     PCA_servo_control.LF_Angle_1(theta[1])
     PCA_servo_control.LF_Angle_2(theta[2])
     PCA_servo_control.RH_Angle_1(theta[1])
     PCA_servo_control.RH_Angle_2(theta[2])
-    
-    theta = IK(-L1,-H + delta_y,s - delta_z,L1, L2, L3, H) #Cap chan di dau tien di xuong
-    PCA_servo_control.RF_Angle_1(theta[1])
+
+    theta = IK(-L1,-H + delta_y, s- delta_z,L1, L2, L3, H)
     PCA_servo_control.RF_Angle_2(theta[2])
-    PCA_servo_control.LH_Angle_1(theta[1])
+    PCA_servo_control.RF_Angle_1(theta[1])
     PCA_servo_control.LH_Angle_2(theta[2])
+    PCA_servo_control.LH_Angle_1(theta[1])
+    time.sleep(0.5)
     
-    
-    theta = IK(-L1,-H+h + delta_y,-s/2 - delta_z, L1, L2, L3, H) # Cap chan di sau di len
+    #chan 2 va chan 3 di cung luc 
+    theta = IK(-L1,-H+h + delta_y, - (s/2) - delta_z,L1, L2, L3, H) # cap chan sau 
     PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
+    PCA_servo_control.LF_Angle_2(160)
+    time.sleep(0.05)
+    PCA_servo_control.RH_Angle_2(140)
     PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
     
     theta = IK(-L1,-H + delta_y,- delta_z,L1, L2, L3, H) #Cap chan di dau tien day ra sau
     PCA_servo_control.RF_Angle_1(theta[1])
     PCA_servo_control.RF_Angle_2(theta[2])
     PCA_servo_control.LH_Angle_1(theta[1])
     PCA_servo_control.LH_Angle_2(theta[2])
-    
-    theta = IK(-L1,-H + delta_y,- delta_z, L1, L2, L3, H) # Cap chan di sau di xuong
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
+
+    theta = IK(-L1,-H + delta_y,s - delta_z,L1, L2, L3, H)
     PCA_servo_control.RH_Angle_1(theta[1])
     PCA_servo_control.RH_Angle_2(theta[2])
-    time.sleep(0.2)
+    PCA_servo_control.LF_Angle_2(theta[2])
+    PCA_servo_control.RH_Angle_1(theta[1])
+    time.sleep(0.08)
 def Go_Backward_Trot(s, h, L1, L2, L3, H):
     theta = IK(-L1 ,-H + delta_y, (s/2)- delta_z,L1, L2, L3, H) #Cap chan dau tien di qua trai
     PCA_servo_control.LF_Angle_0(theta[0])
@@ -151,384 +155,216 @@ def Go_Backward_Trot(s, h, L1, L2, L3, H):
     PCA_servo_control.RH_Angle_0(theta[0])
     PCA_servo_control.RH_Angle_1(theta[1])
     PCA_servo_control.RH_Angle_2(theta[2])
-    
-    '''theta = IK(L1 ,-H + delta_y, - delta_z, L1, L2, L3, H) # Cap chan di sau di xuong 
-    PCA_servo_control.RF_Angle_0(theta[0])
-    PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    theta = IK(-L1 ,-H + delta_y, - delta_z, L1, L2, L3, H)
-    PCA_servo_control.LH_Angle_0(theta[0])
-    PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    time.sleep(0.1)'''
-    ######################################
-    '''#chuyen toa do
-    s =s
-    h= 1.5*h
-    n = +1
-    #giai doan 1 
-    theta = IK(L1,-H+h + delta_y,-(s/2)- delta_z,L1, L2, L3, H) #Cap chan di dau tien di len
-    PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    theta = IK(-L1,-H+h + n*delta_y,-(s/2)- delta_z,L1, L2, L3, H)
-    PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    
-    
-    theta = IK(-L1,-H - delta_y, s/2 - delta_z, L1, L2, L3, H) # Cap chan di sau day phia sau
-    PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    theta = IK(-L1,-H + n*delta_y, s/2 - delta_z, L1, L2, L3, H)
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    
-    theta = IK(L1,-H + delta_y,-s- delta_z,L1, L2, L3, H) #Cap chan di dau tien di len
-    PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    theta = IK(-L1,-H + n*delta_y,-s- delta_z,L1, L2, L3, H)
-    PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    
-    
-    theta = IK(-L1,-H +n*delta_y, s - delta_z, L1, L2, L3, H) # Cap chan di sau day phia sau
-    PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    theta = IK(-L1,-H + delta_y, s - delta_z, L1, L2, L3, H)
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    #giai doan 2 
-    theta = IK(-L1,-H+h +n*delta_y,s/2 - delta_z, L1, L2, L3, H) # Cap chan di sau di len    
-    PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    theta = IK(-L1,-H+h + delta_y,s/2 - delta_z, L1, L2, L3, H)
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    
-    theta = IK(-L1,-H + n*delta_y,-s/2 - delta_z,L1, L2, L3, H) #Cap chan di dau tien day
-    PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    theta = IK(-L1,-H + delta_y,-s/2 - delta_z,L1, L2, L3, H)
-    PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    
-    
-    theta = IK(-L1,-H + delta_y,- delta_z, L1, L2, L3, H) # Cap chan di sau di xuong
-    PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    theta = IK(-L1,-H + delta_y,- delta_z, L1, L2, L3, H)
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    
-    theta = IK(-L1,-H +delta_y,- delta_z,L1, L2, L3, H) #Cap chan di dau tien day
-    PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    theta = IK(-L1,-H + delta_y,- delta_z,L1, L2, L3, H)
-    PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])'''
-    
 
-    '''theta = IK(L1,-H+h + delta_y,-(s/2)- delta_z,L1, L2, L3, H) #Cap chan di dau tien di len
-    PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    theta = IK(-L1,-H+h + delta_y,-(s/2)- delta_z,L1, L2, L3, H)
-    PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    
-    
-    theta = IK(-L1,-H + delta_y, s/2 - delta_z, L1, L2, L3, H) # Cap chan di sau day phia sau
-    PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    
-    
-    theta = IK(-L1,-H + delta_y,-s - delta_z,L1, L2, L3, H) #Cap chan di dau tien di xuong
-    PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    
-    
-    theta = IK(-L1,-H + delta_y, s - delta_z, L1, L2, L3, H) # Cap chan di sau day phia sau
-    PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    
-    time.sleep(0.1)
-    
-    theta = IK(-L1,-H+h + delta_y,s/2 - delta_z, L1, L2, L3, H) # Cap chan di sau di len    
-    PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    
-    theta = IK(-L1,-H + delta_y,-s/2 - delta_z,L1, L2, L3, H) #Cap chan di dau tien day
-    PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    
-    
-    theta = IK(-L1,-H + delta_y,- delta_z, L1, L2, L3, H) # Cap chan di sau di xuong
-    PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    
-    theta = IK(-L1,-H + delta_y,- delta_z,L1, L2, L3, H) #Cap chan di dau tien day
-    PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    
-    
-    time.sleep(0.2)'''
 def Go_Lefttward_Trot(s, h, L1, L2, L3, H):
-    #chuyen tu xoay phai qua giong di ngang sang trai
-    theta = IK(-L1 + (s/2),-H + delta_y,- delta_z,L1, L2, L3, H) #Cap chan dau tien di qua trai
-    PCA_servo_control.LF_Angle_0(theta[0])
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    theta = IK(L1 + (s/2),-H+ delta_y,- delta_z,L1, L2, L3, H)
-    PCA_servo_control.RH_Angle_0(theta[0])
-    PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    
-    theta = IK(L1,-H + h + delta_y, - delta_z, L1, L2, L3, H) # Cap chan di sau di len 
+    h = 3
+    s = 2
+    theta = IK(-L1 + s/2,-H + h + delta_y, - delta_z, L1, L2, L3, H)#cap chan di truoc 
     PCA_servo_control.RF_Angle_0(theta[0])
-    PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    theta = IK(-L1,-H + h + delta_y, - delta_z, L1, L2, L3, H)
-    PCA_servo_control.LH_Angle_0(theta[0])
-    PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    
-    theta = IK(-L1 + s,-H + delta_y,- delta_z,L1, L2, L3, H) #Cap chan di dau tien di xuong
-    PCA_servo_control.LF_Angle_0(theta[0])
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    theta = IK(L1 + s,-H + delta_y, - delta_z, L1, L2, L3, H)
-    PCA_servo_control.RH_Angle_0(theta[0])
-    PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    
-    theta = IK(L1,-H + delta_y, - delta_z, L1, L2, L3, H) # Cap chan di sau di xuong 
-    PCA_servo_control.RF_Angle_0(theta[0])
-    PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    theta = IK(-L1,-H + delta_y, - delta_z, L1, L2, L3, H)
-    PCA_servo_control.LH_Angle_0(theta[0])
-    PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    
-    time.sleep(0.1)
-    
-    theta = IK(-L1 + s/2,-H + h + delta_y,- delta_z,L1, L2, L3, H) #Cap chan di dau tien di tiep
-    PCA_servo_control.LF_Angle_0(theta[0])
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
+    PCA_servo_control.RF_Angle_2(135)
+    time.sleep(0.0)
     theta = IK(L1 + s/2,-H + h + delta_y, - delta_z, L1, L2, L3, H)
-    PCA_servo_control.RH_Angle_0(theta[0])
-    PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    
-    '''theta = IK(L1 + s/2,-H + delta_y, - delta_z, L1, L2, L3, H) # Cap chan di sau di xuong 
-    PCA_servo_control.RF_Angle_0(theta[0])
-    PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    theta = IK(-L1 + s/2,-H  + delta_y, - delta_z, L1, L2, L3, H)
     PCA_servo_control.LH_Angle_0(theta[0])
-    PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])'''
+    PCA_servo_control.LH_Angle_2(135)
     
-    theta = IK(-L1 ,-H + delta_y,- delta_z,L1, L2, L3, H) #Cap chan di dau tien di tiep
+    theta = IK(L1 - s,-H + delta_y, - delta_z, L1, L2, L3, H) # Cap chan di sau day phia kia
     PCA_servo_control.LF_Angle_0(theta[0])
     PCA_servo_control.LF_Angle_1(theta[1])
     PCA_servo_control.LF_Angle_2(theta[2])
-    theta = IK(L1 ,-H + delta_y, - delta_z, L1, L2, L3, H)
+    theta = IK(-L1 - s,-H + delta_y, - delta_z, L1, L2, L3, H)
     PCA_servo_control.RH_Angle_0(theta[0])
     PCA_servo_control.RH_Angle_1(theta[1])
     PCA_servo_control.RH_Angle_2(theta[2])
     
-    '''theta = IK(L1 ,-H + delta_y, - delta_z, L1, L2, L3, H) # Cap chan di sau di xuong 
-    PCA_servo_control.RF_Angle_0(theta[0])
-    PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    theta = IK(-L1 ,-H + delta_y, - delta_z, L1, L2, L3, H)
+    theta = IK(L1 + s,-H + delta_y,- delta_z, L1, L2, L3, H)
     PCA_servo_control.LH_Angle_0(theta[0])
     PCA_servo_control.LH_Angle_1(theta[1])
     PCA_servo_control.LH_Angle_2(theta[2])
-    time.sleep(0.1)'''
-   
-def Go_Rightward_Trot(s, h, L1, L2, L3, H):
-    #chuyen toa do cua chuc nang xoay trai  giong di ngang di phai 
-    theta = IK(-L1 - (s/2),-H + delta_y,- delta_z,L1, L2, L3, H) #Cap chan dau tien di qua trai
-    PCA_servo_control.LF_Angle_0(theta[0])
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    theta = IK(L1 - (s/2),-H+ delta_y,- delta_z,L1, L2, L3, H)
-    PCA_servo_control.RH_Angle_0(theta[0])
-    PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    
-    theta = IK(L1,-H + h + delta_y, - delta_z, L1, L2, L3, H) # Cap chan di sau di len 
+    theta = IK(-L1 + s,-H + delta_y,- delta_z,L1, L2, L3, H)
     PCA_servo_control.RF_Angle_0(theta[0])
     PCA_servo_control.RF_Angle_1(theta[1])
     PCA_servo_control.RF_Angle_2(theta[2])
-    theta = IK(-L1,-H + h + delta_y, - delta_z, L1, L2, L3, H)
-    PCA_servo_control.LH_Angle_0(theta[0])
-    PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    
-    theta = IK(-L1 - s,-H + delta_y,- delta_z,L1, L2, L3, H) #Cap chan di dau tien di xuong
-    PCA_servo_control.LF_Angle_0(theta[0])
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    theta = IK(L1 - s,-H + delta_y, - delta_z, L1, L2, L3, H)
-    PCA_servo_control.RH_Angle_0(theta[0])
-    PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    
-    theta = IK(L1,-H + delta_y, - delta_z, L1, L2, L3, H) # Cap chan di sau di xuong 
-    PCA_servo_control.RF_Angle_0(theta[0])
-    PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    theta = IK(-L1,-H + delta_y, - delta_z, L1, L2, L3, H)
-    PCA_servo_control.LH_Angle_0(theta[0])
-    PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    
     time.sleep(0.1)
-    
-    theta = IK(-L1 - s/2,-H + h + delta_y,- delta_z,L1, L2, L3, H) #Cap chan di dau tien di tiep
-    PCA_servo_control.LF_Angle_0(theta[0])
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
+    ############################################################
     theta = IK(L1 - s/2,-H + h + delta_y, - delta_z, L1, L2, L3, H)
-    PCA_servo_control.RH_Angle_0(theta[0])
-    PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    
-    '''theta = IK(L1 + s/2,-H + delta_y, - delta_z, L1, L2, L3, H) # Cap chan di sau di xuong 
-    PCA_servo_control.RF_Angle_0(theta[0])
-    PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    theta = IK(-L1 + s/2,-H  + delta_y, - delta_z, L1, L2, L3, H)
-    PCA_servo_control.LH_Angle_0(theta[0])
-    PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])'''
-    
-    theta = IK(-L1 ,-H + delta_y,- delta_z,L1, L2, L3, H) #Cap chan di dau tien di tiep
     PCA_servo_control.LF_Angle_0(theta[0])
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    theta = IK(L1 ,-H + delta_y, - delta_z, L1, L2, L3, H)
+    PCA_servo_control.LF_Angle_2(170)
+    theta = IK(-L1 - s/2,-H +h + delta_y, - delta_z, L1, L2, L3, H)
     PCA_servo_control.RH_Angle_0(theta[0])
-    PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
+    PCA_servo_control.RH_Angle_2(140)
     
-    '''theta = IK(L1 ,-H + delta_y, - delta_z, L1, L2, L3, H) # Cap chan di sau di xuong 
+    theta = IK(-L1,-H + delta_y, - delta_z, L1, L2, L3, H)
     PCA_servo_control.RF_Angle_0(theta[0])
     PCA_servo_control.RF_Angle_1(theta[1])
     PCA_servo_control.RF_Angle_2(theta[2])
-    theta = IK(-L1 ,-H + delta_y, - delta_z, L1, L2, L3, H)
+    
+    theta = IK(L1 ,-H + delta_y, - delta_z, L1, L2, L3, H)
     PCA_servo_control.LH_Angle_0(theta[0])
     PCA_servo_control.LH_Angle_1(theta[1])
     PCA_servo_control.LH_Angle_2(theta[2])
-    time.sleep(0.1)'''
+    
+    theta = IK(-L1 ,-H + delta_y, - delta_z, L1, L2, L3, H)
+    PCA_servo_control.RH_Angle_0(theta[0])
+    PCA_servo_control.RH_Angle_1(theta[1])
+    PCA_servo_control.RH_Angle_2(theta[2])
+
+    theta = IK(L1 ,-H + delta_y, - delta_z, L1, L2, L3, H)
+    PCA_servo_control.LF_Angle_0(theta[0])
+    PCA_servo_control.LF_Angle_1(theta[1])
+    PCA_servo_control.LF_Angle_2(theta[2])
+    time.sleep(0.5)
+def Go_Rightward_Trot(s, h, L1, L2, L3, H):
+    #chan 1 vs chan 4 di cung luc
+    h = 3
+    s = 2
+    theta = IK(-L1 - s/2,-H + h + delta_y, - delta_z, L1, L2, L3, H)#cap chan di truoc 
+    PCA_servo_control.RF_Angle_0(theta[0])
+    PCA_servo_control.RF_Angle_2(135)
+    time.sleep(0.0)
+    theta = IK(L1 - s/2,-H + h + delta_y, - delta_z, L1, L2, L3, H)
+    PCA_servo_control.LH_Angle_0(theta[0])
+    PCA_servo_control.LH_Angle_2(135)
+    
+    theta = IK(L1 +s,-H + delta_y, - delta_z, L1, L2, L3, H) # Cap chan di sau day phia kia
+    PCA_servo_control.LF_Angle_0(theta[0])
+    PCA_servo_control.LF_Angle_1(theta[1])
+    PCA_servo_control.LF_Angle_2(theta[2])
+    theta = IK(-L1 +s,-H + delta_y, - delta_z, L1, L2, L3, H)
+    PCA_servo_control.RH_Angle_0(theta[0])
+    PCA_servo_control.RH_Angle_1(theta[1])
+    PCA_servo_control.RH_Angle_2(theta[2])
+    
+    
+    theta = IK(L1 - s,-H + delta_y,- delta_z, L1, L2, L3, H)
+    PCA_servo_control.LH_Angle_0(theta[0])
+    PCA_servo_control.LH_Angle_1(theta[1])
+    PCA_servo_control.LH_Angle_2(theta[2])
+    theta = IK(-L1 - s,-H + delta_y,- delta_z,L1, L2, L3, H)
+    PCA_servo_control.RF_Angle_0(theta[0])
+    PCA_servo_control.RF_Angle_1(theta[1])
+    PCA_servo_control.RF_Angle_2(theta[2])
+    time.sleep(0.1)
+    ############################################################
+    
+    theta = IK(-L1 + s/2,-H +h + delta_y, - delta_z, L1, L2, L3, H)
+    PCA_servo_control.RH_Angle_0(theta[0])
+    PCA_servo_control.RH_Angle_2(140)
+    time.sleep(0.02)
+    theta = IK(L1 + s/2,-H + h + delta_y, - delta_z, L1, L2, L3, H)
+    PCA_servo_control.LF_Angle_0(theta[0])
+    PCA_servo_control.LF_Angle_2(150)
+    
+    theta = IK(-L1,-H + delta_y, - delta_z, L1, L2, L3, H)
+    PCA_servo_control.RF_Angle_0(theta[0])
+    PCA_servo_control.RF_Angle_1(theta[1])
+    PCA_servo_control.RF_Angle_2(theta[2])
+    
+    theta = IK(L1 ,-H + delta_y, - delta_z, L1, L2, L3, H)
+    PCA_servo_control.LH_Angle_0(theta[0])
+    PCA_servo_control.LH_Angle_1(theta[1])
+    PCA_servo_control.LH_Angle_2(theta[2])
+    
+    theta = IK(-L1 ,-H + delta_y, - delta_z, L1, L2, L3, H)
+    PCA_servo_control.RH_Angle_0(theta[0])
+    PCA_servo_control.RH_Angle_1(theta[1])
+    PCA_servo_control.RH_Angle_2(theta[2])
+
+    theta = IK(L1 ,-H + delta_y, - delta_z, L1, L2, L3, H)
+    PCA_servo_control.LF_Angle_0(theta[0])
+    PCA_servo_control.LF_Angle_1(theta[1])
+    PCA_servo_control.LF_Angle_2(theta[2])
+    time.sleep(0.5)
     
 ################################################################################################################# Xoay vong
 def Spin_Right(s, h, L1, L2, L3, H):
-    #chuyen toa do tu ham queo phai 
-    theta = IK(-L1 - (s/2),-H+h + delta_y,- delta_z,L1, L2, L3, H) #Cap chan di dau tien di len
+    h = 3
+    s = 1
+    s_turn = 1
+    theta = IK(-L1 - s/2,-H + h + delta_y, -s_turn - delta_z, L1, L2, L3, H)#cap chan di truoc 
     PCA_servo_control.RF_Angle_0(theta[0])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    theta = IK(L1 - (s/2),-H+h + delta_y,- delta_z,L1, L2, L3, H)
+    PCA_servo_control.RF_Angle_2(130)
+    time.sleep(0.01)
+    theta = IK(L1 - s/2,-H + h + delta_y, +s_turn - delta_z, L1, L2, L3, H)
     PCA_servo_control.LH_Angle_0(theta[0])
-    PCA_servo_control.LH_Angle_2(theta[2])
+    PCA_servo_control.LH_Angle_2(140)
     
-    theta = IK(L1 + s,-H + delta_y, - delta_z, L1, L2, L3, H) # Cap chan di sau day phia sau
-    PCA_servo_control.LF_Angle_0(theta[0])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    theta = IK(-L1 + s,-H + delta_y, - delta_z, L1, L2, L3, H)
-    PCA_servo_control.RH_Angle_0(theta[0])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    
-    theta = IK(-L1 - s,-H + delta_y,- delta_z,L1, L2, L3, H) #Cap chan di dau tien di xuong
+    theta = IK(-L1 - s,-H + delta_y, -s_turn - delta_z, L1, L2, L3, H)#cap chan di truoc 
     PCA_servo_control.RF_Angle_0(theta[0])
+    PCA_servo_control.RF_Angle_1(theta[1])
     PCA_servo_control.RF_Angle_2(theta[2])
-    theta = IK(L1 - s,-H + delta_y, - delta_z, L1, L2, L3, H)
+    time.sleep(0.0)
+    theta = IK(L1 + s,-H + delta_y, +s_turn - delta_z, L1, L2, L3, H)
     PCA_servo_control.LH_Angle_0(theta[0])
+    PCA_servo_control.LH_Angle_1(theta[1])
     PCA_servo_control.LH_Angle_2(theta[2])
-    
-
-    theta = IK(L1 +s/2,-H+h + delta_y, - delta_z, L1, L2, L3, H) # Cap chan di sau di len
+    time.sleep(0.05)
+###########################################################################################
+    theta = IK(L1 - s/2,-H + h + delta_y, s_turn - delta_z, L1, L2, L3, H)#cap chan di truoc 
     PCA_servo_control.LF_Angle_0(theta[0])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    theta = IK(-L1 +s/2,-H+h + delta_y, - delta_z, L1, L2, L3, H)
+    PCA_servo_control.LF_Angle_2(130)
+    time.sleep(0.05)
+    theta = IK(-L1 + s/2,-H + h + delta_y, -s_turn - delta_z, L1, L2, L3, H)
+    PCA_servo_control.RH_Angle_2(140)
     PCA_servo_control.RH_Angle_0(theta[0])
-    PCA_servo_control.RH_Angle_2(theta[2])
+    time.sleep(0.05)
     
-    theta = IK(-L1,-H + delta_y,- delta_z,L1, L2, L3, H) #Cap chan di dau tien day ra sau
-    PCA_servo_control.RF_Angle_0(theta[0])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    theta = IK(L1,-H + delta_y,- delta_z,L1, L2, L3, H)
-    PCA_servo_control.LH_Angle_0(theta[0])
-    PCA_servo_control.LH_Angle_2(theta[2])
     
-    theta = IK(L1,-H + delta_y,- delta_z, L1, L2, L3, H) # Cap chan di sau di xuong
+    theta = IK(L1 - s,-H + delta_y, s_turn - delta_z, L1, L2, L3, H)#cap chan di truoc 
     PCA_servo_control.LF_Angle_0(theta[0])
+    PCA_servo_control.LF_Angle_1(theta[1])
     PCA_servo_control.LF_Angle_2(theta[2])
-    theta = IK(-L1,-H + delta_y,- delta_z, L1, L2, L3, H)
+    time.sleep(0.02)
+    theta = IK(-L1 + s,-H + delta_y, -s_turn - delta_z, L1, L2, L3, H)
     PCA_servo_control.RH_Angle_0(theta[0])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    time.sleep(0.2)   
-    
-def Spin_Left(s, h, L1, L2, L3, H):
-     #chuyen toa do cua que trai coppy qua day 
-    theta = IK(-L1 + (s/2),-H+h + delta_y,- delta_z,L1, L2, L3, H) #Cap chan di dau tien di len
-    PCA_servo_control.RF_Angle_0(theta[0])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    theta = IK(L1 + (s/2),-H+h + delta_y,- delta_z,L1, L2, L3, H)
-    PCA_servo_control.LH_Angle_0(theta[0])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    
-    theta = IK(L1 -s,-H + delta_y, - delta_z, L1, L2, L3, H) # Cap chan di sau day phia sau
-    PCA_servo_control.LF_Angle_0(theta[0])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    theta = IK(-L1 -s,-H + delta_y, - delta_z, L1, L2, L3, H)
-    PCA_servo_control.RH_Angle_0(theta[0])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    
-    theta = IK(-L1 + s,-H + delta_y,- delta_z,L1, L2, L3, H) #Cap chan di dau tien di xuong
-    PCA_servo_control.RF_Angle_0(theta[0])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    theta = IK(L1 + s,-H + delta_y, - delta_z, L1, L2, L3, H)
-    PCA_servo_control.LH_Angle_0(theta[0])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    
-    theta = IK(L1 -s/2,-H+h + delta_y, - delta_z, L1, L2, L3, H) # Cap chan di sau di len
-    PCA_servo_control.LF_Angle_0(theta[0])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    theta = IK(-L1 -s/2,-H+h + delta_y, - delta_z, L1, L2, L3, H)
-    PCA_servo_control.RH_Angle_0(theta[0])
-    PCA_servo_control.RH_Angle_2(theta[2])
-    
-    theta = IK(-L1,-H + delta_y,- delta_z,L1, L2, L3, H) #Cap chan di dau tien day ra sau
-    PCA_servo_control.RF_Angle_0(theta[0])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    theta = IK(L1,-H + delta_y,- delta_z,L1, L2, L3, H)
-    PCA_servo_control.LH_Angle_0(theta[0])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    
-    theta = IK(L1,-H + delta_y,- delta_z, L1, L2, L3, H) # Cap chan di sau di xuong
-    PCA_servo_control.LF_Angle_0(theta[0])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    theta = IK(-L1,-H + delta_y,- delta_z, L1, L2, L3, H)
-    PCA_servo_control.RH_Angle_0(theta[0])
+    PCA_servo_control.RH_Angle_1(theta[1])
     PCA_servo_control.RH_Angle_2(theta[2])
     time.sleep(0.2)
+    PCA_servo_control.Default_Stand_Up()
+    
+def Spin_Left(s, h, L1, L2, L3, H):
+    h = 3
+    s = -1
+    s_turn = -2
+    theta = IK(-L1 - s/2,-H + h + delta_y, -s_turn - delta_z, L1, L2, L3, H)#cap chan di truoc 
+    PCA_servo_control.LF_Angle_0(theta[0])
+    PCA_servo_control.LF_Angle_2(140)
+    time.sleep(0.01)
+    theta = IK(L1 - s/2,-H + h + delta_y, +s_turn - delta_z, L1, L2, L3, H)
+    PCA_servo_control.RH_Angle_0(theta[0])
+    PCA_servo_control.RH_Angle_2(140)
+    
+    theta = IK(-L1 - s,-H + delta_y, -s_turn - delta_z, L1, L2, L3, H)#cap chan di truoc 
+    PCA_servo_control.LF_Angle_0(theta[0])
+    PCA_servo_control.LF_Angle_1(theta[1])
+    PCA_servo_control.LF_Angle_2(theta[2])
+    time.sleep(0.0)
+    theta = IK(L1 + s,-H + delta_y, +s_turn - delta_z, L1, L2, L3, H)
+    PCA_servo_control.RH_Angle_0(theta[0])
+    PCA_servo_control.RH_Angle_1(theta[1])
+    PCA_servo_control.RH_Angle_2(theta[2])
+    time.sleep(0.5)
+#############################################################################
+    theta = IK(L1 - s/2,-H + h + delta_y, s_turn - delta_z, L1, L2, L3, H)#cap chan di truoc 
+    PCA_servo_control.RF_Angle_0(theta[0])
+    PCA_servo_control.RF_Angle_2(130)
+    time.sleep(0.1)
+    theta = IK(-L1 + s/2,-H + h + delta_y, -s_turn - delta_z, L1, L2, L3, H)
+    PCA_servo_control.LH_Angle_2(140)
+    PCA_servo_control.LH_Angle_0(theta[0])
+    time.sleep(0.05)
+    
+    
+    theta = IK(L1 - s,-H + delta_y, s_turn - delta_z, L1, L2, L3, H)#cap chan di truoc 
+    PCA_servo_control.RF_Angle_0(theta[0])
+    PCA_servo_control.RF_Angle_1(theta[1])
+    PCA_servo_control.RF_Angle_2(theta[2])
+    time.sleep(0.02)
+    theta = IK(-L1 + s,-H + delta_y, -s_turn - delta_z, L1, L2, L3, H)
+    PCA_servo_control.LH_Angle_0(theta[0])
+    PCA_servo_control.LH_Angle_1(theta[1])
+    PCA_servo_control.LH_Angle_2(theta[2])
+    time.sleep(0.2)
+    PCA_servo_control.Default_Stand_Up()
 ################################################################################################################# D/N servo
 
 def RF_Servo(x1,y1,z1, L1, L2, L3, H): # quay toi goc dua vao toa do nhap vao
@@ -567,10 +403,10 @@ def G0_Forward_Crawl(s, h, L1, L2, L3, H):
     #theta = IK(-L1 ,-H + h + delta_y,s/2- delta_z,L1, L2, L3, H) #Chan phai di len 
     #chan 1 vs chan 4 di cung luc
     theta = IK(-L1,-H+h + delta_y,(s/2)- delta_z,L1, L2, L3, H)
-    PCA_servo_control.RF_Angle_2(170)
+    PCA_servo_control.RF_Angle_2(140)
     PCA_servo_control.RF_Angle_1(theta[1])
     time.sleep(0.02)
-    PCA_servo_control.LH_Angle_2(170)
+    PCA_servo_control.LH_Angle_2(140)
     PCA_servo_control.LH_Angle_1(theta[1])
     
 
@@ -578,15 +414,16 @@ def G0_Forward_Crawl(s, h, L1, L2, L3, H):
     PCA_servo_control.RF_Angle_2(theta[2])
     PCA_servo_control.RF_Angle_1(theta[1])
     PCA_servo_control.LH_Angle_2(theta[2])
-    #PCA_servo_control.LH_Angle_1(theta[1])
+    PCA_servo_control.LH_Angle_1(theta[1])
     time.sleep(0.5)
     ######################################
     #chan 2 va chan 3 di cung luc 
     theta = IK(-L1,-H+h + delta_y,(s/2) - delta_z,L1, L2, L3, H)
     PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(170)
+    PCA_servo_control.LF_Angle_2(140)
+    time.sleep(0.15)
     PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(170)
+    PCA_servo_control.RH_Angle_2(140)
     
 
     theta = IK(-L1,-H + delta_y,s - delta_z,L1, L2, L3, H)
@@ -672,21 +509,23 @@ def Go_Rightward_Crawl(s, h, L1, L2, L3, H):
     theta = IK(-L1 - s/2,-H + h + delta_y, - delta_z, L1, L2, L3, H)
     PCA_servo_control.RF_Angle_0(theta[0])
     PCA_servo_control.RF_Angle_2(150)
-    time.sleep(0.02)
+    time.sleep(0.015)
     theta = IK(L1 - s/2,-H + h + delta_y, - delta_z, L1, L2, L3, H)
     PCA_servo_control.LH_Angle_0(theta[0])
     PCA_servo_control.LH_Angle_2(150)
     time.sleep(0.02)
-    theta = IK(L1 - s,-H + delta_y, s - delta_z, L1, L2, L3, H)
+    theta = IK(L1 - s,-H + delta_y,- delta_z, L1, L2, L3, H)
     PCA_servo_control.LH_Angle_0(theta[0])
+    PCA_servo_control.LH_Angle_1(theta[1])
     PCA_servo_control.LH_Angle_2(theta[2])
-    theta = IK(-L1 - s,-H + delta_y, s- delta_z,L1, L2, L3, H)
+    theta = IK(-L1 - s,-H + delta_y,- delta_z,L1, L2, L3, H)
     PCA_servo_control.RF_Angle_0(theta[0])
+    PCA_servo_control.RF_Angle_1(theta[1])
     PCA_servo_control.RF_Angle_2(theta[2])
     time.sleep(0.5)
     ############################################################
     
-    theta = IK(-L1 - s/2,-H + + h + delta_y, - delta_z, L1, L2, L3, H)
+    theta = IK(-L1 - s/2,-H +h + delta_y, - delta_z, L1, L2, L3, H)
     PCA_servo_control.RH_Angle_0(theta[0])
     PCA_servo_control.RH_Angle_2(170)
     time.sleep(0.02)
@@ -721,10 +560,10 @@ def Go_Lefttward_Crawl(s, h, L1, L2, L3, H):
     PCA_servo_control.LH_Angle_0(theta[0])
     PCA_servo_control.LH_Angle_2(150)
     time.sleep(0.02)
-    theta = IK(L1 + s,-H + delta_y, s - delta_z, L1, L2, L3, H)
+    theta = IK(L1 + s,-H + delta_y, - delta_z, L1, L2, L3, H)
     PCA_servo_control.LH_Angle_0(theta[0])
     PCA_servo_control.LH_Angle_2(theta[2])
-    theta = IK(-L1 + s,-H + delta_y, s- delta_z,L1, L2, L3, H)
+    theta = IK(-L1 + s,-H + delta_y,- delta_z,L1, L2, L3, H)
     PCA_servo_control.RF_Angle_0(theta[0])
     PCA_servo_control.RF_Angle_2(theta[2])
     time.sleep(0.5)
@@ -732,16 +571,18 @@ def Go_Lefttward_Crawl(s, h, L1, L2, L3, H):
     theta = IK(L1 + s/2,-H + h + delta_y, - delta_z, L1, L2, L3, H)
     PCA_servo_control.LF_Angle_0(theta[0])
     PCA_servo_control.LF_Angle_2(170)
-    theta = IK(-L1 + s/2,-H + + h + delta_y, - delta_z, L1, L2, L3, H)
+    theta = IK(-L1 + s/2,-H + h + delta_y, - delta_z, L1, L2, L3, H)
     PCA_servo_control.RH_Angle_0(theta[0])
     PCA_servo_control.RH_Angle_2(170)
     
     theta = IK(-L1 + s,-H + delta_y, - delta_z, L1, L2, L3, H)
     PCA_servo_control.RH_Angle_0(theta[0])
+    PCA_servo_control.RH_Angle_1(theta[1])
     PCA_servo_control.RH_Angle_2(theta[2])
     time.sleep(0.02)
     theta = IK(L1 + s,-H + delta_y, - delta_z, L1, L2, L3, H)
     PCA_servo_control.LF_Angle_0(theta[0])
+    PCA_servo_control.LF_Angle_1(theta[1])
     PCA_servo_control.LF_Angle_2(theta[2])
     time.sleep(0.5)
     value_increase = 1

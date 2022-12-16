@@ -32,8 +32,9 @@ color_button2 = (232, 232, 21)
 blue_light = (21, 232, 204)
 blue_drark = (2, 38, 102)
 direction = -1
-typeMove = 2
+typeMove = 1
 isStand = 0
+#isButton = 0
 def Create_Text_Word(a : str, color):
     '''Ham de tao ghi chu~'''
     font = pygame.font.SysFont("sans",30)
@@ -47,6 +48,21 @@ try:
 
         mouse_x,mouse_y = pygame.mouse.get_pos()
         '''Giao dien man hinh'''
+        #Draw pannel
+        pygame.draw.rect(screen,blue_drark,(12,74,600,170))
+        '''if isButton == 1:
+            pygame.draw.rect(screen,color_button2,(16,80,132,27))
+        elif isButton == 2:
+            pygame.draw.rect(screen,color_button2,(16,114,132,27))
+        elif isButton == 3:
+            pygame.draw.rect(screen,color_button2,(16,148,132,27))
+        elif isButton == 4:
+            pygame.draw.rect(screen,color_button2,(16,180,132,27))
+        elif isButton == 5:
+            pygame.draw.rect(screen,color_button2,(16,212,132,27))
+        elif isButton == 6:
+            pygame.draw.rect(screen,color_button2,(302,210,132,27))'''
+            
         # button  moving function 
         pygame.draw.rect(screen,color_button2,(120,350,50,50))
         pygame.draw.rect(screen,color_button1,(120,430,50,50))
@@ -55,10 +71,16 @@ try:
         pygame.draw.rect(screen,color_button2,(190,430,50,50))
 
         #draw information
-        screen.blit(Create_Text_Word('Name Robot:',blue_light),(12,12))
-        screen.blit(Create_Text_Word('Quadruped',blue_light),(200,12))
+        screen.blit(Create_Text_Word('Name Robot: Quadruped',blue_light),(300,12))
         screen.blit(Create_Text_Word('Walking Style:',blue_light),(11,42))
         
+        screen.blit(Create_Text_Word('Button O: Stand Up',blue_light),(20,80))
+        screen.blit(Create_Text_Word('Button  I : Set Lying Coordinates ',blue_light),(20,114))
+        screen.blit(Create_Text_Word('Button U: Set Standing Coordinates ',blue_light),(20,148))
+        screen.blit(Create_Text_Word('Button P: Sit Down',blue_light),(20,182))
+        
+        screen.blit(Create_Text_Word('Button A: Rotate Left,',blue_light),(20,212))
+        screen.blit(Create_Text_Word('Button D: Rotate Right',blue_light),(310,212))
         # draw funtion type of movement
         if typeMove == 1:
             pygame.draw.rect(screen,color_button2,(205,45,150,27))
@@ -71,7 +93,8 @@ try:
         elif 0< typeMove < 3:
             screen.blit(Create_Text_Word('1.Trotting',blue_light),(205,45))
             screen.blit(Create_Text_Word('2.Crawling',blue_light),(360,45))
-        direction = -1 
+        direction = -1
+        
         for event in pygame.event.get():
             # Event by Type of walking Keyboard kieu di 
             if event.type == pygame.KEYDOWN:
@@ -88,21 +111,29 @@ try:
                     direction = 1
                 if event.key == pygame.K_DOWN: 
                     direction = 3
-                if event.key == pygame.K_a:         # xoay trai 
+                    
+                if event.key == pygame.K_a:         # xoay trai
                     main_module.Spin_Left()
+                    pygame.draw.rect(screen,color_button2,(16,212,132,27))
                 if event.key == pygame.K_d:         # xoay phai
                     main_module.Spin_Right()
+                    pygame.draw.rect(screen,color_button2,(302,210,132,27))
                 if event.key == pygame.K_i:         # dua ve vi tri nam
+                    pygame.draw.rect(screen,color_button2,(16,80,132,27))
                     main_module.Default_0_degree()
                     isStand = 0
+                    
                 if event.key == pygame.K_u:         # dua ve vi tri di dung
                     main_module.Default_Stand_Up()
+                    pygame.draw.rect(screen,color_button2,(16,148,132,27))
                 if event.key == pygame.K_o:         # dung len
+                    pygame.draw.rect(screen,color_button2,(16,80,132,27))
                     main_module.Stand_Robot(isStand)
                     isStand = 1
                 if event.key == pygame.K_p:         # nam xuong 
                     main_module.Down_Robot(isStand)
                     isStand = 2
+                    pygame.draw.rect(screen,color_button2,(16,180,132,27))
         if 0< typeMove <3: # khong truyen so khong thi co di chuyen khong 
             #print('typeMove =',typeMove) Ve giao dien dang di theo kieu nao
             if 0 <= direction < 7:
@@ -110,6 +141,7 @@ try:
                 main_module.Move_Robot(typeMove,direction) # 60s 
         
         if event.type == pygame.QUIT:
+            main_module.Down_Robot(isStand)
             running = False
             print('Exit program')
             main_module.GPIO.cleanup()# giai phong bo nho GPIO
@@ -118,6 +150,7 @@ try:
 
     pygame.quit()
 except KeyboardInterrupt:
+    main_module.Down_Robot(isStand)
     print('Interupt Ctrl + C')
     main_module.GPIO.cleanup()#giai phong bo nho GPIO
     print('Exit program')
