@@ -400,7 +400,6 @@ def Type_Crawl(direction, s, h, L1, L2, L3, H):
     else:
         print("Dung im")
 def G0_Forward_Crawl(s, h, L1, L2, L3, H):
-    #theta = IK(-L1 ,-H + h + delta_y,s/2- delta_z,L1, L2, L3, H) #Chan phai di len 
     #chan 1 vs chan 4 di cung luc
     theta = IK(-L1,-H+h + delta_y,(s/2)- delta_z,L1, L2, L3, H)
     PCA_servo_control.RF_Angle_2(140)
@@ -430,7 +429,7 @@ def G0_Forward_Crawl(s, h, L1, L2, L3, H):
     PCA_servo_control.RH_Angle_1(theta[1])
     PCA_servo_control.RH_Angle_2(theta[2])
     PCA_servo_control.LF_Angle_2(theta[2])
-    PCA_servo_control.RH_Angle_1(theta[1])
+    PCA_servo_control.LF_Angle_1(theta[1])
     value_increase = 1
     for i in np.arange(0,s + value_increase, value_increase):
         RF_Servo(-L1, -H + delta_y, s - delta_z -i, L1, L2, L3, H)
@@ -439,69 +438,49 @@ def G0_Forward_Crawl(s, h, L1, L2, L3, H):
         RH_Servo(-L1, -H +delta_y, s - delta_z -i, L1, L2, L3, H)
     time.sleep(0.08)
 def Go_Backward_Crawl(s, h, L1, L2, L3, H):
-    #theta = IK(-L1,-H+h + delta_y,-(s/2)- delta_z,L1, L2, L3, H)
-    PCA_servo_control.RF_Angle_1(-60)
-    PCA_servo_control.RF_Angle_2(100)
-    time.sleep(0.02)
-    PCA_servo_control.LH_Angle_1(-60)
-    PCA_servo_control.LH_Angle_2(100)
-    time.sleep(0.02)
-    theta = IK(-L1,-H , -s- delta_z,L1, L2, L3, H)
+    s = 4
+    value_increase = 1
+    delta_h = 2
+    for i in np.arange(0,s + value_increase, value_increase):
+        RF_Servo(-L1, -H + delta_y + delta_h, - delta_z +i, L1, L2, L3, H)
+        LH_Servo(-L1, -H + delta_y ,- delta_z +i, L1, L2, L3, H)
+        LF_Servo(-L1, -H + delta_y + delta_h,- delta_z +i, L1, L2, L3, H)
+        RH_Servo(-L1, -H + delta_y , - delta_z +i, L1, L2, L3, H)
+    time.sleep(0.08)
+    #chan 1 vs chan 4 di cung luc
+    theta = IK(-L1,-H+h + delta_h + delta_y,(s/2)- delta_z,L1, L2, L3, H)
+    PCA_servo_control.RF_Angle_2(130)
     PCA_servo_control.RF_Angle_1(theta[1])
+    time.sleep(0.0)
+    theta = IK(-L1,-H+h + delta_y,(s/2)- delta_z,L1, L2, L3, H)
+    PCA_servo_control.LH_Angle_2(130)
+    PCA_servo_control.LH_Angle_1(theta[1])
+    
+
+    theta = IK(-L1,-H + delta_y, - delta_z,L1, L2, L3, H)
     PCA_servo_control.RF_Angle_2(theta[2])
+    PCA_servo_control.RF_Angle_1(theta[1])
     PCA_servo_control.LH_Angle_2(theta[2])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    time.sleep(0.05)
+    PCA_servo_control.LH_Angle_1(theta[1])
+    time.sleep(0.5)
     ######################################
     #chan 2 va chan 3 di cung luc 
-    #theta = IK(-L1,-H+h + delta_y,-(s/2) - delta_z,L1, L2, L3, H)
-    PCA_servo_control.RH_Angle_2(170)    
-    PCA_servo_control.RH_Angle_1(-90)
-    time.sleep(0.05)
-    PCA_servo_control.LF_Angle_1(-90)
-    PCA_servo_control.LF_Angle_2(150)
-    time.sleep(0.5)
+    theta = IK(-L1,-H+ h + delta_h + delta_y,(s/2) - delta_z,L1, L2, L3, H)
+    PCA_servo_control.LF_Angle_2(130)
+    PCA_servo_control.LF_Angle_1(theta[1] - 25)
+    time.sleep(0.02)
+    theta = IK(-L1,-H + h  + delta_h ,(s/2) - delta_z,L1, L2, L3, H)
+    PCA_servo_control.RH_Angle_2(150)
+    PCA_servo_control.RH_Angle_1(theta[1]- 20)
     
-    theta = IK(-L1,-H ,-s - delta_z,L1, L2, L3, H)
-    PCA_servo_control.RH_Angle_2(theta[2])
-    PCA_servo_control.RH_Angle_1(theta[1])
+    time.sleep(0.01)
 
+    theta = IK(-L1,-H + delta_y, -delta_z,L1, L2, L3, H)
     PCA_servo_control.LF_Angle_2(theta[2])
     PCA_servo_control.LF_Angle_1(theta[1])
-    value_increase = 1    
-    for i in np.arange(0,s + value_increase, value_increase):
-        RF_Servo(-L1, -H , -s - delta_z +i, L1, L2, L3, H)
-        LH_Servo(-L1, -H , -s - delta_z +i, L1, L2, L3, H)
-        LF_Servo(-L1, -H , -s - delta_z +i, L1, L2, L3, H)
-        RH_Servo(-L1, -H , -s - delta_z +i, L1, L2, L3, H)
-    time.sleep(0.08)
-''' RF_Servo(-L1,-H + delta_y,- delta_z,L1, L2, L3, H)   
-    LH_Servo(+L1,-H ,- delta_z,L1, L2, L3, H)
+    PCA_servo_control.RH_Angle_1(theta[1])
+    PCA_servo_control.RH_Angle_2(theta[2])
     
-    RF_Servo(-L1,-H+h + delta_y, -(s/2),L1, L2, L3, H)
-    LH_Servo(+L1,-H+h , -(s/2),L1, L2, L3, H)
-    
-    
-    RF_Servo(-L1,-H + delta_y, -s - delta_z,L1, L2, L3, H)
-    LH_Servo(-L1,-H , -s - delta_z,L1, L2, L3, H)
-    time.sleep(0.1)
-     
-    #chan 2 va chan 3 di cung luc 
-    LF_Servo(L1,-H + delta_y,-delta_z,L1, L2, L3, H)
-    RH_Servo(-L1,-H ,- delta_z,L1, L2, L3, H)
-    
-    LF_Servo(L1,-H+h + delta_y, -(s/2) ,L1, L2, L3, H)
-    RH_Servo(-L1,-H+h , -(s/2),L1, L2, L3, H)
-    
-    LF_Servo(L1,-H + delta_y, -s - delta_z,L1, L2, L3, H)
-    RH_Servo(-L1,-H , -s - delta_z,L1, L2, L3, H)
-    
-    for i in np.arange(0,s + 0.5, 0.5):
-        RF_Servo(-L1, -H + delta_y, -s - delta_z +i, L1, L2, L3, H)
-        LH_Servo(-L1, -H + delta_y, -s - delta_z +i, L1, L2, L3, H)
-        LF_Servo(-L1, -H + delta_y, -s - delta_z +i, L1, L2, L3, H)
-        RH_Servo(-L1, -H + delta_y, -s - delta_z +i, L1, L2, L3, H)
-    time.sleep(0.08)'''
 def Go_Rightward_Crawl(s, h, L1, L2, L3, H):
     #chan 1 vs chan 4 di cung luc
     h = 3
