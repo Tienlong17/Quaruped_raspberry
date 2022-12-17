@@ -72,24 +72,24 @@ def Call_SR4(dire):
 def Check_Object(dist):
     check_object1 = Call_SR4(dist)
     if check_object1 == False: # False nghia la khong co vat can va Tru la co vat can 
-        return dist # khong co vat can thi duoc di <- se de ham di chuyen 
+        return (dist,2) # khong co vat can thi duoc di <- se de ham di chuyen 
     else:
         check_object2 = Call_SR4(dist - 1)
         if check_object2 == False: # False nghia la khong co vat can va Tru la co vat can 
             print("thuc hien chuyen dong lan 2, huong:",dist - 1) # khong co vat can thi duoc di
-            return dist - 1
+            return (dist - 1,3)
         else:
             check_object3 = Call_SR4(dist + 1)
             if check_object3 == False: # False nghia la khong co vat can va Tru la co vat can 
                 print("thuc hien chuyen dong lan 3, huong:",(dist + 1)) # khong co vat can thi duoc di
-                return dist + 1
+                return (dist + 1,4)
             else:
                 check_object4 = Call_SR4(dist + 2)
                 if check_object4 == False: # False nghia la khong co vat can va Tru la co vat can 
                     print("thuc hien chuyen dong lan 4, huong:",dist + 2) # khong co vat can thi duoc di
-                    return dist + 2
+                    return (dist + 2,5)
                 else:
-                    return -1
+                    return (dist,0)
 
 #information detail Robot
 L1 = 7
@@ -108,12 +108,13 @@ sampling_time_crawl  = 0.1# thoi gian lay mau
 
 
 
-def Move_Robot(type_move: int, direction: int):
+def Move_Robot(type_move: int, direction: int, direc: int):
     global TM_trot, s_step_trot, high_step_trot, TM_crawl, s_step__crawl, high_step_crawl, sampling_time_crawl, L1, L2, L3, HIGH_stand
-    if type_move == 1:
-        Math_auto_quadruped.Type_Trot(direction, s_step_trot, high_step_trot, L1, L2, L3, HIGH_stand)
-    if type_move == 2:
-        Math_auto_quadruped.Type_Crawl(direction, s_step__crawl, high_step_crawl, L1, L2, L3, HIGH_stand)
+    for i in range(0,direc,1):
+        if type_move == 1:
+            Math_auto_quadruped.Type_Trot(direction, s_step_trot, high_step_trot, L1, L2, L3, HIGH_stand)
+        if type_move == 2:
+            Math_auto_quadruped.Type_Crawl(direction, s_step__crawl, high_step_crawl, L1, L2, L3, HIGH_stand)
 def Default_0_degree():
     PCA_servo_control.Default_legs_3()
     PCA_servo_control.Default_legs_2()
@@ -127,11 +128,15 @@ def Stand_Robot(isStand):
         Default_0_degree()
         time.sleep(0.4)
         PCA_servo_control.Standup()
-        
+    elif isStand == 3:
+        PCA_servo_control.Stand_Sit()
 def Spin_Right():
     Math_auto_quadruped.Spin_Right(2, 3, L1, L2, L3, HIGH_stand)
 def Spin_Left():
     Math_auto_quadruped.Spin_Left(2, 3, L1, L2, L3, HIGH_stand)
-def Down_Robot(isStand):
+def Lie_Robot(isStand):
     if isStand ==1:
-        PCA_servo_control.Dowwnup()
+        PCA_servo_control.Downup()
+def Sitdown(isStand):
+    if isStand ==1:
+        PCA_servo_control.Sitdown()
