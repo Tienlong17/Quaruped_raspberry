@@ -198,7 +198,38 @@ def Controll_Downup():
         servo10.angle = 1.5*(anpha - i)
         servo14.angle = (180 - 1.5*anpha) + 1.5*i
         time.sleep(spam_time)
-
+def Controll_Sitdown():
+    anpha = 45
+    for i in np.arange(0,anpha,1):
+        # khau 2
+        #servo1.angle = (180-anpha) + i # tuc la chay toi 180 -anpha do
+        #servo5.angle = anpha - i
+        servo9.angle = (180-anpha) + i
+        servo13.angle = anpha - i
+        time.sleep(spam_time)
+        # khau 3
+        #servo2.angle = 1.5*(anpha-i)
+        #servo6.angle = (180 - 1.5*anpha) + 1.5*i
+        #time.sleep(spam_time)
+        servo10.angle = 1.5*(anpha - i)
+        servo14.angle = (180 - 1.5*anpha) + 1.5*i
+        time.sleep(spam_time)
+def Controll_Stand_Sit():
+    spam_time = 0.05
+    anpha = 45
+    time_anpha = 1.5
+    for i in np.arange(0,anpha,1.5): # <2
+        # khau 2
+        #servo1.angle = 180 - i # tuc la chay toi 120 do
+        #servo5.angle = i
+        servo9.angle = 180 - i
+        servo13.angle = i
+        # khau 3
+        #servo2.angle = time_anpha*i
+        #servo6.angle = 180 - time_anpha*i
+        servo10.angle = time_anpha*i
+        servo14.angle = 180 - time_anpha*i
+        time.sleep(spam_time)
 def Standup():
     spam_time = 0.05
     anpha = 45
@@ -216,9 +247,17 @@ def Standup():
         servo14.angle = 180 - time_anpha*i
         time.sleep(spam_time)
 
-def Dowwnup():
+def Downup():
     Default_legs_1()
     time.sleep(spam_time)
     Controll_Downup()
-pca.deinit()
 
+def Sitdown():
+    Default_legs_1()
+    time.sleep(spam_time)
+    Controll_Sitdown()
+def Stand_Sit():
+    Default_legs_1()
+    time.sleep(spam_time)
+    Controll_Stand_Sit()
+pca.deinit()
