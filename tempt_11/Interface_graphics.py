@@ -35,6 +35,7 @@ direction = -1
 typeMove = 1
 isStand = 0
 isCheck = 0
+#isClose = 0
 def Create_Text_Word(a : str, color):
     '''Ham de tao ghi chu~'''
     font = pygame.font.SysFont("sans",30)
@@ -134,6 +135,8 @@ try:
                 if event.key == pygame.K_p:         # ngoi 2 chan
                     main_module.Sitdown(isStand)
                     isStand = 3
+                #if event.key == pygame.K_t:
+                #    main_module.Tempt()
                 if event.key == pygame.K_y:
                     if isCheck == 0:
                         isCheck = 1

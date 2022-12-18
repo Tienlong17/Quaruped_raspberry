@@ -50,7 +50,7 @@ def Check_distance_SCR(number):
     distance = (TimeElapsed * 34300) / 2
 
     # Viet ham check distance 
-    if 0 < distance <= 10: # co vat can 
+    if 0 < distance <= 15: # co vat can 
         return True
     else: 
         return False  
@@ -72,7 +72,7 @@ def Call_SR4(dire):
 def Check_Object(dist):
     check_object1 = Call_SR4(dist)
     if check_object1 == False: # False nghia la khong co vat can va Tru la co vat can 
-        return (dist,2) # khong co vat can thi duoc di <- se de ham di chuyen 
+        return (dist,1) # khong co vat can thi duoc di <- se de ham di chuyen 
     else:
         check_object2 = Call_SR4(dist - 1)
         if check_object2 == False: # False nghia la khong co vat can va Tru la co vat can 
@@ -82,12 +82,12 @@ def Check_Object(dist):
             check_object3 = Call_SR4(dist + 1)
             if check_object3 == False: # False nghia la khong co vat can va Tru la co vat can 
                 print("thuc hien chuyen dong lan 3, huong:",(dist + 1)) # khong co vat can thi duoc di
-                return (dist + 1,4)
+                return (dist + 1,3)
             else:
                 check_object4 = Call_SR4(dist + 2)
                 if check_object4 == False: # False nghia la khong co vat can va Tru la co vat can 
                     print("thuc hien chuyen dong lan 4, huong:",dist + 2) # khong co vat can thi duoc di
-                    return (dist + 2,5)
+                    return (dist + 2,2)
                 else:
                     return (dist,0)
 
@@ -140,3 +140,5 @@ def Lie_Robot(isStand):
 def Sitdown(isStand):
     if isStand ==1:
         PCA_servo_control.Sitdown()
+def Tempt():
+    Math_auto_quadruped.set_stand(s_step_trot, high_step_trot, L1, L2, L3, HIGH_stand)
