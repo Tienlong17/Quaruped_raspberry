@@ -43,14 +43,14 @@ def Forward(s, h, L1, L2, L3, H):
     c = -H
     value_increase = 1.5
     delta_z = -2
-    delta_y = 1
+    delta_y = 2
     for z in np.arange(0,s + value_increase, value_increase):
-        theta = IK(-L1, a*z**2 + b*z + c -delta_z,z -delta_z,L1, L2, L3, H)
+        theta = IK(-L1, a*z**2 + b*z + c +delta_y,z -delta_z,L1, L2, L3, H)
         PCA_servo_control.RF_Angle_2(theta[2])
         PCA_servo_control.RF_Angle_1(theta[1])
         PCA_servo_control.LH_Angle_2(theta[2])
         PCA_servo_control.LH_Angle_1(theta[1])
-        theta = IK(-L1,-H  + delta_y,-z  -delta_z,L1, L2, L3, H)
+        theta = IK(-L1,-H  + delta_y,-z  +delta_y,L1, L2, L3, H)
         PCA_servo_control.LF_Angle_2(theta[2])
         PCA_servo_control.LF_Angle_1(theta[1])
         theta = IK(-L1,-H + delta_y,-z  -delta_z,L1, L2, L3, H)
@@ -72,7 +72,7 @@ def Forward(s, h, L1, L2, L3, H):
         PCA_servo_control.RH_Angle_1(theta[1])
 def Backward(s, h, L1, L2, L3, H):
     h = 6
-    s = 3
+    s = 4
     a = -4*h/(s*s)
     b = -a*s
     c = -H
@@ -87,11 +87,11 @@ def Backward(s, h, L1, L2, L3, H):
     PCA_servo_control.RH_Angle_1(theta[1])
     time.sleep(0.1)
     for z in np.arange(0,s + value_increase/2, value_increase):
-        theta = IK(-L1, a*(-z)**2 - b*(-z) + c + delta_h -delta_z,-z -delta_z,L1, L2, L3, H)
+        theta = IK(-L1, a*(-z)**2 - b*(-z) + c + delta_h +delta_y,-z -delta_z,L1, L2, L3, H)
         PCA_servo_control.RH_Angle_2(theta[2])
         PCA_servo_control.RH_Angle_1(theta[1])
         time.sleep(0.1)
-        theta = IK(-L1, a*(-z)**2 - b*(-z) + c -delta_z,-z -delta_z,L1, L2, L3, H)
+        theta = IK(-L1, a*(-z)**2 - b*(-z) + c +delta_y,-z -delta_z,L1, L2, L3, H)
         PCA_servo_control.LF_Angle_2(theta[2])
         PCA_servo_control.LF_Angle_1(theta[1])
         theta = IK(-L1,-H + delta_h  + delta_y,z  -delta_z,L1, L2, L3, H)
@@ -118,49 +118,37 @@ def Backward(s, h, L1, L2, L3, H):
         theta = IK(-L1, a*(-z)**2 +b*(-z) + c + delta_y,-z -delta_z,L1, L2, L3, H)
         PCA_servo_control.RF_Angle_1(theta[1])
         PCA_servo_control.RF_Angle_2(theta[2])
+    time.sleep(0.2)
+    PCA_servo_control.Default_Stand_Up()
 ################################################################################################################# Xoay vong
 def Spin_Right(s, h, L1, L2, L3, H):
-    h = 3
-    s = 1
-    s_turn = 1
-    theta = IK(-L1 - s/2,-H + h + delta_y, -s_turn - delta_z, L1, L2, L3, H)#cap chan di truoc 
-    PCA_servo_control.RF_Angle_0(theta[0])
-    PCA_servo_control.RF_Angle_2(130)
-    time.sleep(0.01)
-    theta = IK(L1 - s/2,-H + h + delta_y, +s_turn - delta_z, L1, L2, L3, H)
-    PCA_servo_control.LH_Angle_0(theta[0])
-    PCA_servo_control.LH_Angle_2(140)
-    
-    theta = IK(-L1 - s,-H + delta_y, -s_turn - delta_z, L1, L2, L3, H)#cap chan di truoc 
-    PCA_servo_control.RF_Angle_0(theta[0])
-    PCA_servo_control.RF_Angle_1(theta[1])
-    PCA_servo_control.RF_Angle_2(theta[2])
-    time.sleep(0.0)
-    theta = IK(L1 + s,-H + delta_y, +s_turn - delta_z, L1, L2, L3, H)
-    PCA_servo_control.LH_Angle_0(theta[0])
-    PCA_servo_control.LH_Angle_1(theta[1])
-    PCA_servo_control.LH_Angle_2(theta[2])
-    time.sleep(0.05)
-###########################################################################################
-    theta = IK(L1 - s/2,-H + h + delta_y, s_turn - delta_z, L1, L2, L3, H)#cap chan di truoc 
-    PCA_servo_control.LF_Angle_0(theta[0])
-    PCA_servo_control.LF_Angle_2(130)
-    time.sleep(0.05)
-    theta = IK(-L1 + s/2,-H + h + delta_y, -s_turn - delta_z, L1, L2, L3, H)
-    PCA_servo_control.RH_Angle_2(140)
-    PCA_servo_control.RH_Angle_0(theta[0])
-    time.sleep(0.05)
-    
-    
-    theta = IK(L1 - s,-H + delta_y, s_turn - delta_z, L1, L2, L3, H)#cap chan di truoc 
-    PCA_servo_control.LF_Angle_0(theta[0])
-    PCA_servo_control.LF_Angle_1(theta[1])
-    PCA_servo_control.LF_Angle_2(theta[2])
-    time.sleep(0.02)
-    theta = IK(-L1 + s,-H + delta_y, -s_turn - delta_z, L1, L2, L3, H)
-    PCA_servo_control.RH_Angle_0(theta[0])
-    PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(theta[2])
+    h = 4
+    s = 2
+    a = -4*h/(s*s)
+    b = -a*s
+    c = -H
+    value_increase = 0.5
+    delta_z = -2
+    delta_y = 1
+    for z in np.arange(0,s + value_increase, value_increase):
+        theta = IK(-L1-z, a*z**2 + b*z + c -delta_z,-z -delta_z,L1, L2, L3, H)
+        PCA_servo_control.RF_Angle_2(theta[2])
+        PCA_servo_control.RF_Angle_0(theta[0])
+        PCA_servo_control.RF_Angle_1(theta[1])
+        theta = IK(L1-z, a*z**2 + b*z + c -delta_z,z -delta_z,L1, L2, L3, H)
+        PCA_servo_control.LH_Angle_2(theta[2])
+        PCA_servo_control.LH_Angle_0(theta[0])
+        PCA_servo_control.LH_Angle_1(theta[1])
+    for z in np.arange(0,s + value_increase, value_increase):
+        theta = IK(L1-z, a*z**2 + b*z + c -delta_z,z -delta_z,L1, L2, L3, H)
+        PCA_servo_control.LF_Angle_2(theta[2])
+        PCA_servo_control.LF_Angle_0(theta[0])
+        PCA_servo_control.LF_Angle_1(theta[1])
+        time.sleep(0.1)
+        theta = IK(-L1-z, a*z**2 + b*z + c -delta_z,-z -delta_z,L1, L2, L3, H)
+        PCA_servo_control.RH_Angle_2(theta[2])
+        PCA_servo_control.RH_Angle_0(theta[0])
+        PCA_servo_control.RH_Angle_1(theta[1])
     time.sleep(0.2)
     PCA_servo_control.Default_Stand_Up()
     

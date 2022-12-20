@@ -116,9 +116,9 @@ def Move_Robot(type_move: int, direction: int, direc: int):
         if type_move == 2:
             Math_auto_quadruped.Type_Crawl(direction, s_step__crawl, high_step_crawl, L1, L2, L3, HIGH_stand)
 def Forward():
-    Math_auto_quadruped.Forward(s_step_trot, high_step_trot, L1, L2, L3, HIGH_stand)
+    Math_auto_quadruped.Forward(3, 6, L1, L2, L3, HIGH_stand)
 def Backward():
-    Math_auto_quadruped.Backward(s_step_trot, high_step_trot, L1, L2, L3, HIGH_stand)
+    Math_auto_quadruped.Backward(3, 6, L1, L2, L3, HIGH_stand)
 def Default_0_degree():
     PCA_servo_control.Default_legs_3()
     PCA_servo_control.Default_legs_2()
