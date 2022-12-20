@@ -122,12 +122,12 @@ def Backward(s, h, L1, L2, L3, H):
     PCA_servo_control.Default_Stand_Up()
 ################################################################################################################# Xoay vong
 def Spin_Right(s, h, L1, L2, L3, H):
-    h = 4
+    h = 6
     s = 2
     a = -4*h/(s*s)
     b = -a*s
     c = -H
-    value_increase = 0.5
+    value_increase = 1
     delta_z = -2
     delta_y = 1
     for z in np.arange(0,s + value_increase, value_increase):
@@ -140,15 +140,17 @@ def Spin_Right(s, h, L1, L2, L3, H):
         PCA_servo_control.LH_Angle_0(theta[0])
         PCA_servo_control.LH_Angle_1(theta[1])
     for z in np.arange(0,s + value_increase, value_increase):
-        theta = IK(L1-z, a*z**2 + b*z + c -delta_z,z -delta_z,L1, L2, L3, H)
-        PCA_servo_control.LF_Angle_2(theta[2])
-        PCA_servo_control.LF_Angle_0(theta[0])
-        PCA_servo_control.LF_Angle_1(theta[1])
-        time.sleep(0.1)
         theta = IK(-L1-z, a*z**2 + b*z + c -delta_z,-z -delta_z,L1, L2, L3, H)
         PCA_servo_control.RH_Angle_2(theta[2])
         PCA_servo_control.RH_Angle_0(theta[0])
         PCA_servo_control.RH_Angle_1(theta[1])
+        time.sleep(0.1)
+        theta = IK(L1-z, a*z**2 + b*z + c -delta_z,z -delta_z,L1, L2, L3, H)
+        PCA_servo_control.LF_Angle_2(theta[2])
+        PCA_servo_control.LF_Angle_0(theta[0])
+        PCA_servo_control.LF_Angle_1(theta[1])
+        
+        
     time.sleep(0.2)
     PCA_servo_control.Default_Stand_Up()
     
