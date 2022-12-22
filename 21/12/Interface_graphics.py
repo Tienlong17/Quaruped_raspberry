@@ -118,6 +118,10 @@ try:
                     main_module.Forward()
                 if event.key == pygame.K_s:
                     main_module.Backward()
+                if event.key == pygame.K_a:
+                    main_module.Left()
+                if event.key == pygame.K_d:
+                    main_module.Right()
                 ###########################################################    
                 if event.key == pygame.K_i:         # dua ve vi tri nam
                     pygame.draw.rect(screen,color_button2,(16,80,132,27))

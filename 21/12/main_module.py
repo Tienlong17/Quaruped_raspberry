@@ -119,6 +119,10 @@ def Forward():
     Math_auto_quadruped.Forward(3, 6, L1, L2, L3, HIGH_stand)
 def Backward():
     Math_auto_quadruped.Backward(3, 6, L1, L2, L3, HIGH_stand)
+def Left():
+    Math_auto_quadruped.Left(3, 6, L1, L2, L3, HIGH_stand)
+def Right():
+    Math_auto_quadruped.Right(3, 6, L1, L2, L3, HIGH_stand)
 def Default_0_degree():
     PCA_servo_control.Default_legs_3()
     PCA_servo_control.Default_legs_2()
