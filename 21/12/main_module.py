@@ -71,7 +71,8 @@ def Call_SR4(dire):
         return t
 def Check_Object(dist):
     check_object1 = Call_SR4(dist)
-    if check_object1 == False: # False nghia la khong co vat can va Tru la co vat can 
+    if check_object1 == False: # False nghia la khong co vat can va Tru la co vat can
+        print("thuc hien chuyen dong lan 1, huong:",dist)
         return (dist,1) # khong co vat can thi duoc di <- se de ham di chuyen 
     else:
         check_object2 = Call_SR4(dist - 1)
@@ -89,6 +90,7 @@ def Check_Object(dist):
                     print("thuc hien chuyen dong lan 4, huong:",dist + 2) # khong co vat can thi duoc di
                     return (dist + 2,2)
                 else:
+                    print("Khong di chuyen:")
                     return (dist,0)
 
 #information detail Robot
@@ -113,8 +115,10 @@ def Move_Robot(type_move: int, direction: int, direc: int):
     for i in range(0,direc,1):
         if type_move == 1:
             Math_auto_quadruped.Type_Trot(direction, s_step_trot, high_step_trot, L1, L2, L3, HIGH_stand)
-        if type_move == 2:
+        elif type_move == 2:
             Math_auto_quadruped.Type_Crawl(direction, s_step__crawl, high_step_crawl, L1, L2, L3, HIGH_stand)
+        elif type_move == 3:
+            Math_auto_quadruped.Type_Trot_Parabol(direction,3, 6, L1, L2, L3, HIGH_stand)
 def Forward():
     Math_auto_quadruped.Forward(3, 6, L1, L2, L3, HIGH_stand)
 def Backward():

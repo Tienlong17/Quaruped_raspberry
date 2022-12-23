@@ -35,9 +35,19 @@ def IK(x: float, y: float , z: float, L1: float, L2: float, L3: float, H: float)
     except:
         print("Viet ham dua cac chan de robot 4 chan dung im") 
     return(theta)
+############################################################################################## Di theo parabol
+def Type_Trot_Parabol(direction, s, h, L1, L2, L3, H):
+    if direction == 1 or direction == 5:
+        Forward(s, h, L1, L2, L3, H)
+    elif direction == 3:
+        Backward(s, h, L1, L2, L3, H)
+    elif direction == 2 or direction == 5:
+        Right(s, h, L1, L2, L3, H)
+    elif direction == 4 or direction == 0:
+        Left(s, h, L1, L2, L3, H)
+    else:
+        print("Dung im")
 def Forward(s, h, L1, L2, L3, H):
-    h = 6
-    s = 3
     a = -4*h/(s*s)
     b = -a*s
     c = -H
@@ -71,12 +81,12 @@ def Forward(s, h, L1, L2, L3, H):
         PCA_servo_control.RH_Angle_2(theta[2])
         PCA_servo_control.RH_Angle_1(theta[1])
 def Backward(s, h, L1, L2, L3, H):
-    h = 6
-    s = 4
+    h = 5
+    s = 3.5
     a = -4*h/(s*s)
     b = -a*s
     c = -H
-    value_increase = 1.5
+    value_increase = 1
     delta_z = -2
     delta_y = 1
     delta_h = -1
@@ -90,10 +100,10 @@ def Backward(s, h, L1, L2, L3, H):
         theta = IK(-L1, a*(-z)**2 - b*(-z) + c + delta_h +delta_y,-z -delta_z,L1, L2, L3, H)
         PCA_servo_control.RH_Angle_2(theta[2])
         PCA_servo_control.RH_Angle_1(theta[1])
-        time.sleep(0.1)
-        theta = IK(-L1, a*(-z)**2 - b*(-z) + c +delta_y,-z -delta_z,L1, L2, L3, H)
-        PCA_servo_control.LF_Angle_2(theta[2])
+        theta = IK(-L1, a*(-z)**2 - b*(-z) + c - delta_h +delta_y,-z -delta_z,L1, L2, L3, H)
         PCA_servo_control.LF_Angle_1(theta[1])
+        PCA_servo_control.LF_Angle_2(theta[2])
+        
         theta = IK(-L1,-H + delta_h  + delta_y,z  -delta_z,L1, L2, L3, H)
         PCA_servo_control.LH_Angle_2(theta[2])
         PCA_servo_control.LH_Angle_1(theta[1])
@@ -102,11 +112,11 @@ def Backward(s, h, L1, L2, L3, H):
         PCA_servo_control.RF_Angle_1(theta[1])
         PCA_servo_control.RF_Angle_2(theta[2])      
     time.sleep(0.2)
-    value_increase = 1.5
     for z in np.arange(-s,0 + value_increase/2, value_increase):
-        theta = IK(-L1,-H  + delta_y, z  -delta_z,L1, L2, L3, H)
-        PCA_servo_control.LF_Angle_2(theta[2])
+        theta = IK(-L1,-H - delta_h + delta_y, z  -delta_z,L1, L2, L3, H)
         PCA_servo_control.LF_Angle_1(theta[1])
+        PCA_servo_control.LF_Angle_2(theta[2])
+        
         theta = IK(-L1,-H + delta_h + delta_y, z  -delta_z,L1, L2, L3, H)
         PCA_servo_control.RH_Angle_2(theta[2])
         PCA_servo_control.RH_Angle_1(theta[1])
@@ -590,7 +600,7 @@ def G0_Forward_Crawl(s, h, L1, L2, L3, H):
     PCA_servo_control.LF_Angle_2(140)
     time.sleep(0.15)
     PCA_servo_control.RH_Angle_1(theta[1])
-    PCA_servo_control.RH_Angle_2(140)
+    PCA_servo_control.RH_Angle_2(135)
     
 
     theta = IK(-L1,-H + delta_y,s - delta_z,L1, L2, L3, H)

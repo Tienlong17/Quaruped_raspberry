@@ -82,13 +82,21 @@ try:
             pygame.draw.rect(screen,color_button2,(205,45,150,27))
             screen.blit(Create_Text_Word('1.Trotting',blue_drark),(205,45))
             screen.blit(Create_Text_Word('2.Crawling',blue_light),(360,45))
+            screen.blit(Create_Text_Word('3.Trot-Parabol',blue_light),(520,45))
         elif typeMove == 2:
             screen.blit(Create_Text_Word('1.Trotting',blue_light),(205,45))
             pygame.draw.rect(screen,color_button2,(360,45,150,27))
             screen.blit(Create_Text_Word('2.Crawling',blue_drark),(360,45))
-        elif 0< typeMove < 3:
+            screen.blit(Create_Text_Word('3.Trot-Parabol',blue_light),(520,45))
+        elif typeMove == 3:
             screen.blit(Create_Text_Word('1.Trotting',blue_light),(205,45))
             screen.blit(Create_Text_Word('2.Crawling',blue_light),(360,45))
+            pygame.draw.rect(screen,color_button2,(510,45,200,27))
+            screen.blit(Create_Text_Word('3.Trot-Parabol',blue_drark),(520,45))
+        elif 0< typeMove < 4:
+            screen.blit(Create_Text_Word('1.Trotting',blue_light),(205,45))
+            screen.blit(Create_Text_Word('2.Crawling',blue_light),(360,45))
+            screen.blit(Create_Text_Word('3.Trot-Parabol',blue_light),(520,45))
         direction = -1
         
         for event in pygame.event.get():
@@ -97,7 +105,9 @@ try:
                 if event.key == pygame.K_1:
                     typeMove = 1 # di kieu trot 
                 if event.key == pygame.K_2:
-                    typeMove = 2 # di kieu crawl 
+                    typeMove = 2 # di kieu crawl
+                if event.key == pygame.K_3:
+                    typeMove = 3
                 # Movement Function 
                 if event.key == pygame.K_LEFT: 
                     direction = 4
@@ -150,7 +160,7 @@ try:
                         isCheck = 1
                     else:
                         isCheck = 0
-        if 0< typeMove <3 and isStand == 1 and 0 <= direction < 7: # khong truyen so khong thi co di chuyen khong 
+        if 0< typeMove <4 and isStand == 1 and 0 < direction < 5: 
             if isCheck == 1:
                 direc = main_module.Check_Object(direction)
                 main_module.Move_Robot(typeMove,direc[0],direc[1]) # 60s 
