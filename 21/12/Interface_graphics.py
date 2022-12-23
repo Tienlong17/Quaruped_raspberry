@@ -160,7 +160,7 @@ try:
                         isCheck = 1
                     else:
                         isCheck = 0
-        if 0< typeMove <4 and isStand == 1 and 0 < direction < 5: 
+        if 0< typeMove < 4 and isStand == 1 and 0 < direction < 5: 
             if isCheck == 1:
                 direc = main_module.Check_Object(direction)
                 main_module.Move_Robot(typeMove,direc[0],direc[1]) # 60s 

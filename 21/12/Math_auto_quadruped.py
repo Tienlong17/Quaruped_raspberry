@@ -408,7 +408,7 @@ def Go_Backward_Trot(s, h, L1, L2, L3, H):
 def Go_Lefttward_Trot(s, h, L1, L2, L3, H):
     h = 3
     s = 2
-    delta_h = 4
+    delta_h = 0
     theta = IK(L1, -H + delta_h + delta_z, -delta_z,L1, L2, L3,H)
     PCA_servo_control.LF_Angle_0(theta[0])
     PCA_servo_control.RF_Angle_0(theta[0])
@@ -730,6 +730,7 @@ def Go_Lefttward_Crawl(s, h, L1, L2, L3, H):
     theta = IK(L1 + s/2,-H + h + delta_y, - delta_z, L1, L2, L3, H)
     PCA_servo_control.LF_Angle_0(theta[0])
     PCA_servo_control.LF_Angle_2(170)
+    time.sleep(0.02)
     theta = IK(-L1 + s/2,-H + h + delta_y, - delta_z, L1, L2, L3, H)
     PCA_servo_control.RH_Angle_0(theta[0])
     PCA_servo_control.RH_Angle_2(170)
